@@ -1,0 +1,14 @@
+<template>
+  <require from="../resources/elements/island-list"></require>
+  <require from="../resources/elements/island-form"></require>
+
+  <div>
+    <div>
+      <island-form islands.bind="islands"></island-form>
+    </div>
+
+    <div>
+      <island-list islands.bind="islands"></island-list>
+    </div>
+  </div>
+</template>

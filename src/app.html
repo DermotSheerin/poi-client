@@ -1,37 +1,12 @@
 <template>
+  <require from="views/islands"></require>
+
   <div class="ui container">
     <section class="ui raised segment">
       <h3 class="ui header">POI - Islands of Ireland</h3>
+      <div class="ui basic segment">
+        <islands></islands>
+      </div>
     </section>
-    <div class="ui basic segment">
-      <h1 class="ui dividing header">Add a Candidate</h1>
-      <form submit.trigger="addIsland()" class="ui primary segment form">
-        <div class="two fields">
-          <div class="field">
-            <label>Region/Category <i class="ie flag"></i> </label>
-            <input value.bind="region"/>
-          </div>
-          <div class="field">
-            <label>Island Name</label>
-            <input value.bind="name"/>
-          </div>
-        </div>
-        <div class="field">
-          <label>Description</label>
-          <input value.bind="description"/>
-        </div>
-        <div class="two fields">
-          <div class="field">
-            <label>Latitude</label>
-            <input value.bind="latitude"/>
-          </div>
-          <div class="field">
-            <label>Longitude</label>
-            <input value.bind="longitude"/>
-          </div>
-        </div>
-        <button class="ui blue submit button">Add Island</button>
-      </form>
-    </div>
   </div>
 </template>

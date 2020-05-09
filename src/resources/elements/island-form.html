@@ -1,0 +1,30 @@
+<template>
+  <h1 class="ui dividing header">Add an Island</h1>
+  <form submit.trigger="addIsland()" class="ui primary segment form">
+    <div class="two fields">
+      <div class="field">
+        <label>Region/Category <i class="ie flag"></i> </label>
+        <input value.bind="region"/>
+      </div>
+      <div class="field">
+        <label>Island Name</label>
+        <input value.bind="name"/>
+      </div>
+    </div>
+    <div class="field">
+      <label>Description</label>
+      <input value.bind="description"/>
+    </div>
+    <div class="two fields">
+      <div class="field">
+        <label>Latitude</label>
+        <input value.bind="latitude"/>
+      </div>
+      <div class="field">
+        <label>Longitude</label>
+        <input value.bind="longitude"/>
+      </div>
+    </div>
+    <button class="ui blue submit button">Add Island</button>
+  </form>
+</template>
