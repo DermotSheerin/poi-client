@@ -1,11 +1,12 @@
 <template>
-  <require from="views/islands"></require>
+  <require from="resources/elements/nav-bar.html"></require>
 
   <div class="ui container">
     <section class="ui raised segment">
       <h3 class="ui header">POI - Islands of Ireland</h3>
+      <nav-bar router.bind="router"></nav-bar>
       <div class="ui basic segment">
-        <islands></islands>
+        <router-view></router-view>
       </div>
     </section>
   </div>
