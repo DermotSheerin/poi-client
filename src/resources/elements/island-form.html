@@ -1,11 +1,17 @@
 <template>
   <h1 class="ui dividing header">Add an Island</h1>
   <form submit.trigger="addIsland()" class="ui primary segment form">
-    <div class="two fields">
+    <div class="one field">
+      <label>Region/Category <i class="ie flag"></i> </label>
+
+<!--      https://aurelia.io/docs/binding/selects#select-number-->
       <div class="field">
-        <label>Region/Category <i class="ie flag"></i> </label>
-        <input value.bind="region"/>
+        <select value.bind="selectedRegion">
+          <option model.bind="null">Choose a Region......</option>
+          <option repeat.for="region of regions" model.bind="region" >${region}</option>
+        </select>
       </div>
+
       <div class="field">
         <label>Island Name</label>
         <input value.bind="name"/>

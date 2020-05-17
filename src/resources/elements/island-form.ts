@@ -14,12 +14,13 @@ export class IslandForm {
   @bindable
   regions: string[];
 
-  // selectedRegion = '';
+  selectedRegion = '';
 
   constructor(private ds: IslandService) {}
 
   addIsland() { // using ds to access methods in IslandService class and pass details entered in island-form to the islands array
-    this.ds.addIsland(this.region, this.name, this.description, this.latitude, this.longitude);
+    console.log(`here is selectedRegion --- ${this.selectedRegion}`)
+    this.ds.addIsland(this.selectedRegion, this.name, this.description, this.latitude, this.longitude);
   }
 
 }

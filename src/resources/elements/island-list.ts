@@ -4,4 +4,6 @@ import { Island } from '../../services/island-types';
 export class IslandList {
   @bindable
   islands: Island[];
+  @bindable
+  regions: string[];
 }
