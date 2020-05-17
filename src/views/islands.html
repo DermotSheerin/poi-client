@@ -1,14 +1,24 @@
 <template>
   <require from="../resources/elements/island-list"></require>
   <require from="../resources/elements/island-form"></require>
+  <require from="../resources/elements/island-total"></require>
 
-  <div>
+  <div class="ui segment">
+    <div>
+      <island-total islandTotal.bind="islandTotal"></island-total>
+    </div>
+  </div>
+
+  <div class="ui segment">
     <div>
       <island-form islands.bind="islands" regions.bind="regions" ></island-form>
     </div>
+  </div>
 
+  <div class="ui segment">
     <div>
       <island-list islands.bind="islands" regions.bind="regions" ></island-list>
     </div>
   </div>
+
 </template>
