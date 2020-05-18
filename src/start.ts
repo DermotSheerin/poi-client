@@ -1,24 +1,24 @@
 import { RouterConfiguration, Router } from 'aurelia-router';
 import { PLATFORM } from 'aurelia-pal';
 
-export class App {
+export class Start {
   router: Router;
 
   configureRouter(config: RouterConfiguration, router: Router) {
     config.map([
       {
-        route: ['', 'islands'],
-        name: 'Island',
-        moduleId: PLATFORM.moduleName('views/islands'),
+        route: ['', 'login'],
+        name: 'Login',
+        moduleId: PLATFORM.moduleName('views/login'),
         nav: true,
-        title: 'Add Islands'
+        title: 'Login'
       },
       {
-        route: 'logout',
-        name: 'logout',
-        moduleId: PLATFORM.moduleName('views/logout'),
+        route: 'signup',
+        name: 'signup',
+        moduleId: PLATFORM.moduleName('views/signup'),
         nav: true,
-        title: 'Logout'
+        title: 'Signup'
       }
     ]);
     this.router = router;
