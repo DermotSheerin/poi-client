@@ -6,6 +6,13 @@ export interface Island {
   longitude: number,
 }
 
+export interface User {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+}
+
 // export interface Region {
 //   region: string;
 // }
