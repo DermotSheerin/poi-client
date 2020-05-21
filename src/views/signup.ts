@@ -1,12 +1,13 @@
 import { inject } from 'aurelia-framework';
 import { IslandService } from '../services/island-service';
+import { HttpClient } from 'aurelia-http-client';
 
-@inject(IslandService)
+@inject(IslandService, HttpClient)
 export class Signup {
-  firstName = 'Marge';
-  lastName = 'Simpson';
-  email = 'marge@simpson.com';
-  password = 'secret';
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
   prompt = '';
 
   constructor(private ds: IslandService) {}
