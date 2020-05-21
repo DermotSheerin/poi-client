@@ -15,12 +15,13 @@ export class IslandService {
 
   constructor(private httpClient: HttpClient, private ea: EventAggregator, private au: Aurelia, private router: Router) {
     httpClient.configure(http => {
-      http.withBaseUrl('http://localhost:8080');
+      http.withBaseUrl('http://localhost:3000');
     });
     this.getUsers();
     // this.getCandidates();
   }
 
+  // need to change this to send to backend
   async addIsland(region: string, name: string, description: string, latitude: number, longitude: number) {
     const island = {
       region: region,
@@ -36,21 +37,38 @@ export class IslandService {
   }
 
   async getUsers() {
-    const response = await this.httpClient.get('/api/users.json');
+    const response = await this.httpClient.get('/api/users');
     const users = await response.content;
     users.forEach(user => {
       this.users.set(user.email, user);
     });
   }
 
-  signup(firstName: string, lastName: string, email: string, password: string) {
-    //this.changeRouter(PLATFORM.moduleName('app'))
-    return false;
+  // signup(firstName: string, lastName: string, email: string, password: string) {
+  //   this.changeRouter(PLATFORM.moduleName('app'));
+  //   return false;
+  // }
+
+  async signup(firstName: string, lastName: string, email: string, password: string) {
+    const user = {
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      password: password
+    };
+    const response = await this.httpClient.post('/api/users', user);
+   // const newUser = await response.content;
+    if(response) {
+      this.changeRouter(PLATFORM.moduleName('app'));
+    } else {
+      return false;
+    }
   }
+
   async login(email: string, password: string) {
     const user = this.users.get(email);
     if (user && (user.password === password)) {
-      this.changeRouter(PLATFORM.moduleName('app'))
+      this.changeRouter(PLATFORM.moduleName('app'));
       return true;
     } else {
       return false;

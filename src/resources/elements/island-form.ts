@@ -13,7 +13,6 @@ export class IslandForm {
   islands: Island[];
   @bindable
   regions: string[];
-
   selectedRegion = '';
 
   constructor(private ds: IslandService) {}

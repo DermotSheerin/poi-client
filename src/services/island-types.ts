@@ -4,6 +4,7 @@ export interface Island {
   description: string,
   latitude: number,
   longitude: number,
+  // _id : string;
 }
 
 export interface User {
@@ -11,6 +12,7 @@ export interface User {
   lastName: string;
   email: string;
   password: string;
+  // _id : string;
 }
 
 // export interface Region {
