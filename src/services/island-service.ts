@@ -9,7 +9,7 @@ import {TotalIslandUpdate} from "./messages";
 @inject(HttpClient, EventAggregator, Aurelia, Router)
 export class IslandService {
   islands: Island[] = [];
-  users: Map<string, User> = new Map();
+  //users: Map<string, User> = new Map();
   regions = ['North East', 'East Coast', 'South Coast', 'Mid West'];
   islandTotal = 0;
 
@@ -17,8 +17,6 @@ export class IslandService {
     httpClient.configure(http => {
       http.withBaseUrl('http://localhost:3000');
     });
-    this.getUsers();
-    // this.getCandidates();
   }
 
   // need to change this to send to backend
@@ -36,17 +34,12 @@ export class IslandService {
     console.log('Total Islands so far ' + this.islandTotal);
   }
 
-  async getUsers() {
-    const response = await this.httpClient.get('/api/users');
-    const users = await response.content;
-    users.forEach(user => {
-      this.users.set(user.email, user);
-    });
-  }
-
-  // signup(firstName: string, lastName: string, email: string, password: string) {
-  //   this.changeRouter(PLATFORM.moduleName('app'));
-  //   return false;
+  // async getUsers() {
+  //   const response = await this.httpClient.get('/api/users');
+  //   const users = await response.content;
+  //   users.forEach(user => {
+  //     this.users.set(user.email, user);
+  //   });
   // }
 
   async signup(firstName: string, lastName: string, email: string, password: string) {
@@ -57,8 +50,8 @@ export class IslandService {
       password: password
     };
     const response = await this.httpClient.post('/api/users', user);
-   // const newUser = await response.content;
-    if(response) {
+    const newUser = await response.content;
+    if(newUser) {
       this.changeRouter(PLATFORM.moduleName('app'));
     } else {
       return false;
@@ -66,17 +59,49 @@ export class IslandService {
   }
 
   async login(email: string, password: string) {
-    const user = this.users.get(email);
-    if (user && (user.password === password)) {
-      this.changeRouter(PLATFORM.moduleName('app'));
-      return true;
-    } else {
-      return false;
+    let success = false;
+    try {
+      const response = await this.httpClient.post('/api/users/authenticate', { email: email, password: password });
+      const status = await response.content;
+      if (status.success) {
+        this.httpClient.configure((configuration) => { // retrieve and remember the token if we have authenticated successfully..... and the including this header in all subsequent requests.
+          configuration.withHeader('Authorization', 'bearer ' + status.token);
+        });
+
+        // when a user successfully logs in we can store the token in LocalStorage
+        localStorage.islandStorage = JSON.stringify(response.content);
+
+        // await this.getUsers();
+
+        this.changeRouter(PLATFORM.moduleName('app'));
+        success = status.success;
+      }
+    } catch (e) {
+      success = false;
     }
+    return success;
   }
 
+  // clear the token
   logout() {
-    this.changeRouter(PLATFORM.moduleName('start'))
+    localStorage.islandStorage = null;
+    this.httpClient.configure(configuration => {
+      configuration.withHeader('Authorization', '');
+    });
+    this.changeRouter(PLATFORM.moduleName('start'));
+  }
+
+  // check for the presence of a token, and if found set it as a header (similar to the log in procedure):
+  checkIsAuthenticated() {
+    let authenticated = false;
+    if (localStorage.islandStorage !== 'null') {
+      authenticated = true;
+      this.httpClient.configure(http => {
+        const auth = JSON.parse(localStorage.islandStorage);
+        http.withHeader('Authorization', 'bearer ' + auth.token);
+      });
+      this.changeRouter(PLATFORM.moduleName('app'));
+    }
   }
 
   changeRouter(module:string) {
