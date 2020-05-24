@@ -1,9 +1,7 @@
 import { bindable } from 'aurelia-framework';
-import { Island } from '../../services/island-types';
+import {Island} from '../../services/island-types';
 
 export class IslandList {
   @bindable
   islands: Island[];
-  @bindable
-  regions: string[];
 }

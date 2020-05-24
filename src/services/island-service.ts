@@ -1,7 +1,7 @@
 import { inject, Aurelia } from 'aurelia-framework';
 import { Router } from 'aurelia-router';
 import { PLATFORM } from 'aurelia-pal';
-import {Island, User } from "./island-types";
+import {Island, RegionCategory } from "./island-types";
 import { HttpClient } from 'aurelia-http-client';
 import { EventAggregator } from 'aurelia-event-aggregator';
 import {TotalIslandUpdate} from "./messages";
@@ -9,8 +9,7 @@ import {TotalIslandUpdate} from "./messages";
 @inject(HttpClient, EventAggregator, Aurelia, Router)
 export class IslandService {
   islands: Island[] = [];
-  //users: Map<string, User> = new Map();
-  regions = ['North East', 'East Coast', 'South Coast', 'Mid West'];
+  regionCategories: RegionCategory[] = [];
   islandTotal = 0;
 
   constructor(private httpClient: HttpClient, private ea: EventAggregator, private au: Aurelia, private router: Router) {
@@ -19,10 +18,23 @@ export class IslandService {
     });
   }
 
+  async getRegionCategories() {
+    const response = await this.httpClient.get('/api/regionCategories');
+    this.regionCategories = await response.content;
+    console.log(`here in islandService ${this.regionCategories}`);
+  }
+
+
+  async addRegionCategory() {
+    // const response = await this.httpClient.get('/api/regionCategories');
+    // this.regionCategories = await response.content;
+    // console.log(`here in islandService ${this.regionCategories}`);
+  }
+
   // need to change this to send to backend
-  async addIsland(region: string, name: string, description: string, latitude: number, longitude: number) {
+  async addIsland(regionCategory: RegionCategory, name: string, description: string, latitude: number, longitude: number) {
     const island = {
-      region: region,
+      regionCategory: regionCategory,
       name: name,
       description: description,
       latitude: latitude,
@@ -71,7 +83,8 @@ export class IslandService {
         // when a user successfully logs in we can store the token in LocalStorage
         localStorage.islandStorage = JSON.stringify(response.content);
 
-        // await this.getUsers();
+        // on login retrieve the Regions from model on server side
+        await this.getRegionCategories();
 
         this.changeRouter(PLATFORM.moduleName('app'));
         success = status.success;
