@@ -1,41 +1,61 @@
-<template>
-  <label>
-    <select value.bind="selectedRegionCategory">
-      <option model.bind="null">Choose Category...</option>
-      <option repeat.for="region of regionCategories"
-              model.bind="region">
-        ${region.region}
-      </option>
-    </select>
-  </label>
-</template>
-
 <!--<template>-->
-<!--  <article class="four wide column">-->
-<!--    <table class="ui striped celled table segment">-->
-<!--      <thead>-->
-<!--      <tr>-->
-<!--        <th class="one wide">Region/RegionCategory</th>-->
-<!--        <th class="two wide"> Image </th>-->
-<!--        <th class="one wide">Island Name</th>-->
-<!--        <th>Description</th>-->
-<!--        <th class="one wide"> Latitude </th>-->
-<!--        <th class="one wide"> Longitude </th>-->
-<!--        <th class="one wide"> Edit Details </th>-->
-<!--        <th class="one wide"> Delete Island </th>-->
-<!--      </tr>-->
-<!--      </thead>-->
-<!--      <tbody>-->
-<!--      <tr repeat.for="region of regionCategories">-->
-<!--        <td> ${region.region} </td>-->
-<!--        <td> <img src="" class="ui medium image"> </td>-->
-<!--        <td>  ${island.name}</td>-->
-<!--        <td>  ${island.description} </td>-->
-<!--        <td>  ${island.latitude} </td>-->
-<!--        <td>  ${island.longitude} </td>-->
-<!--      </tr>-->
-<!--      </tbody>-->
-<!--    </table>-->
-<!--  </article>-->
+<!--  <label>-->
+<!--    <select value.bind="selectedRegionCategory">-->
+<!--      <option model.bind="null">Choose Category...</option>-->
+<!--      <option repeat.for="region of regionCategories"-->
+<!--              model.bind="region">-->
+<!--        ${region.region}-->
+<!--      </option>-->
+<!--    </select>-->
+<!--  </label>-->
 <!--</template>-->
 
+<template>
+<!--  <div>-->
+<!--  <form submit.trigger="categoryFilter()" class="ui primary segment form">-->
+<!--      <h2>Categories</h2>-->
+<!--      <label repeat.for="region of regionCategories">-->
+<!--        <input type="checkbox" model.bind="region" value.bind="selectedRegionCategory">-->
+<!--        ${region.region}-->
+<!--      </label>-->
+<!--      <button class="ui blue submit button">Search</button>-->
+<!--  </form>-->
+<!--  </div>-->
+
+  <form submit.trigger="categoryFilter()" class="ui primary segment form">
+    <h4 class="ui dividing header"> Search Category </h4>
+    <div class="grouped inline fields">
+      <div class="field" repeat.for="region of regionCategories">
+        <div class="ui radio checkbox">
+          <input type="radio" model.bind="region" checked.bind="selectedRegionCategory">
+          <label>${region.region}</label>
+        </div>
+      </div>
+    </div>
+    <button class="ui blue submit button">Search</button>
+<!--    <div class="field">-->
+<!--      <select value.bind="filterSelection">-->
+<!--        <option model.bind="null">Choose a Region......</option>-->
+<!--        <option repeat.for="region of regionCategories" model.bind="region" >${region.region}</option>-->
+<!--      </select>-->
+<!--    </div>-->
+<!--    <button class="ui blue submit button">Add Island</button>-->
+  </form>
+  
+
+  <article class="four wide column">
+    <table class="ui striped celled table segment">
+      <thead>
+      <tr>
+        <th class="one wide">Island Name</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr repeat.for="island of filterIslands">
+        <td> ${island.name} </td>
+
+      </tr>
+      </tbody>
+    </table>
+  </article>
+</template>

@@ -24,6 +24,15 @@ export class IslandService {
     console.log(`here in islandService ${this.regionCategories}`);
   }
 
+  async categoryFilter(category: RegionCategory) {
+    const response = await this.httpClient.get('/api/regionCategories/' + category.region);
+    console.log(`here is category region in island-service ${category.region}`);
+    const categoryFilter = await response.content;
+    console.log(`here is category filter in island-service ${categoryFilter}`);
+    return categoryFilter
+    //console.log(`here in islandService ${this.regionCategories}`);
+  }
+
 
   async addRegionCategory() {
     // const response = await this.httpClient.get('/api/regionCategories');
