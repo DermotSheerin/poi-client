@@ -2,6 +2,7 @@
   <require from="../resources/elements/island-list"></require>
   <require from="../resources/elements/island-form"></require>
   <require from="../resources/elements/island-total"></require>
+  <require from="../resources/elements/category-list"></require>
 
   <div class="ui segment">
     <div>
@@ -11,14 +12,22 @@
 
   <div class="ui segment">
     <div>
-      <island-form islands.bind="islands" regions.bind="regions" ></island-form>
+        <island-form islands.bind="islands" region-categories.bind="regionCategories" ></island-form>
     </div>
   </div>
 
-  <div class="ui segment">
+  <div class="ui secondary segment">
     <div>
-      <island-list islands.bind="islands" regions.bind="regions" ></island-list>
-    </div>
-  </div>
+      <h1>View Islands by Region</h1>
+      <category-list region-categories.bind="regionCategories"  ></category-list>
 
+    </div>
+
+    <div class="ui  divider"></div>
+
+    <div>
+      <island-list islands.bind="islands"  ></island-list>
+    </div>
+
+  </div>
 </template>

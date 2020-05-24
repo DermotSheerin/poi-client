@@ -2,15 +2,14 @@
   <h1 class="ui header">Add an Island</h1>
   <form submit.trigger="addIsland()" class="ui primary segment form">
     <div class="one field">
-      <label>Region/Category <i class="ie flag"></i> </label>
+      <label>Region/RegionCategory <i class="ie flag"></i> </label>
 <!--      https://aurelia.io/docs/binding/selects#select-number-->
       <div class="field">
-        <select value.bind="selectedRegion">
+        <select value.bind="selectedRegionCategory">
           <option model.bind="null">Choose a Region......</option>
-          <option repeat.for="region of regions" model.bind="region" >${region}</option>
+          <option repeat.for="region of regionCategories" model.bind="region" >${region.region}</option>
         </select>
       </div>
-
       <div class="field">
         <label>Island Name</label>
         <input value.bind="name"/>
