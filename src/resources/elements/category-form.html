@@ -1,0 +1,14 @@
+<template>
+  <form submit.trigger="categoryFilter()" class="ui primary segment form">
+    <h4 class="ui dividing header"> Search Category </h4>
+    <div class="grouped fields">
+      <div class="field" repeat.for="region of regionCategories">
+        <div class="ui radio checkbox">
+          <input type="radio" model.bind="region" checked.bind="selectedRegionCategory">
+          <label>${region.region}</label>
+        </div>
+      </div>
+    </div>
+    <button class="ui blue submit button">Search</button>
+  </form>
+</template>
