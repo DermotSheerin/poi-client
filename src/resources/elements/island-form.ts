@@ -15,7 +15,9 @@ export class IslandForm {
 
   selectedRegionCategory: RegionCategory = null;
 
-  constructor(private ds: IslandService) {}
+  constructor(private ds: IslandService) {
+    console.log(`here in Island-Form Constructor`)
+  }
 
   addIsland() { // using ds to access methods in IslandService class and access the addIsland method
     this.ds.addIsland(this.selectedRegionCategory, this.name, this.description, this.latitude, this.longitude);

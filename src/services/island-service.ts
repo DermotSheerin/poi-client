@@ -10,27 +10,28 @@ import {TotalIslandUpdate} from "./messages";
 export class IslandService {
   islands: Island[] = [];
   regionCategories: RegionCategory[] = [];
+  filterIslands: Island[] = [];
   islandTotal = 0;
 
   constructor(private httpClient: HttpClient, private ea: EventAggregator, private au: Aurelia, private router: Router) {
     httpClient.configure(http => {
       http.withBaseUrl('http://localhost:3000');
+      console.log(`here in Island-Service Constructor`);
     });
   }
 
-  async getRegionCategories() {
+  async getRegionCategories() { // retrieve all categories from the backend and store in local regionCategories array
     const response = await this.httpClient.get('/api/regionCategories');
     this.regionCategories = await response.content;
     console.log(`here in islandService ${this.regionCategories}`);
   }
 
-  async categoryFilter(category: RegionCategory) {
+  async categoryFilter(category: RegionCategory) { // pass the category selected by the search filter to the backend and retrieve the islands associate with this category
+    this.filterIslands.splice(0,this.filterIslands.length); // clear the filterIslands array before each filter request
     const response = await this.httpClient.get('/api/regionCategories/' + category.region);
-    console.log(`here is category region in island-service ${category.region}`);
     const categoryFilter = await response.content;
-    console.log(`here is category filter in island-service ${categoryFilter}`);
-    return categoryFilter
-    //console.log(`here in islandService ${this.regionCategories}`);
+    categoryFilter.forEach(island =>
+      this.filterIslands.push(island)); // go through the returned list of islands and add to the filterIslands array that is bound to the category-list custom element
   }
 
 
@@ -94,6 +95,9 @@ export class IslandService {
 
         // on login retrieve the Regions from model on server side
         await this.getRegionCategories();
+
+        // on login, clear the filterIslands array
+        this.filterIslands.splice(0,this.filterIslands.length);
 
         this.changeRouter(PLATFORM.moduleName('app'));
         success = status.success;

@@ -1,61 +1,22 @@
-<!--<template>-->
-<!--  <label>-->
-<!--    <select value.bind="selectedRegionCategory">-->
-<!--      <option model.bind="null">Choose Category...</option>-->
-<!--      <option repeat.for="region of regionCategories"-->
-<!--              model.bind="region">-->
-<!--        ${region.region}-->
-<!--      </option>-->
-<!--    </select>-->
-<!--  </label>-->
-<!--</template>-->
-
 <template>
-<!--  <div>-->
-<!--  <form submit.trigger="categoryFilter()" class="ui primary segment form">-->
-<!--      <h2>Categories</h2>-->
-<!--      <label repeat.for="region of regionCategories">-->
-<!--        <input type="checkbox" model.bind="region" value.bind="selectedRegionCategory">-->
-<!--        ${region.region}-->
-<!--      </label>-->
-<!--      <button class="ui blue submit button">Search</button>-->
-<!--  </form>-->
-<!--  </div>-->
-
-  <form submit.trigger="categoryFilter()" class="ui primary segment form">
-    <h4 class="ui dividing header"> Search Category </h4>
-    <div class="grouped inline fields">
-      <div class="field" repeat.for="region of regionCategories">
-        <div class="ui radio checkbox">
-          <input type="radio" model.bind="region" checked.bind="selectedRegionCategory">
-          <label>${region.region}</label>
-        </div>
-      </div>
-    </div>
-    <button class="ui blue submit button">Search</button>
-<!--    <div class="field">-->
-<!--      <select value.bind="filterSelection">-->
-<!--        <option model.bind="null">Choose a Region......</option>-->
-<!--        <option repeat.for="region of regionCategories" model.bind="region" >${region.region}</option>-->
-<!--      </select>-->
-<!--    </div>-->
-<!--    <button class="ui blue submit button">Add Island</button>-->
-  </form>
-  
-
-  <article class="four wide column">
     <table class="ui striped celled table segment">
       <thead>
       <tr>
-        <th class="one wide">Island Name</th>
+        <th> Region/Category </th>
+        <th> Island Name </th>
+        <th> Latitude </th>
+        <th> Longitude </th>
+        <th> Edit Details </th>
+        <th> Delete Island </th>
       </tr>
       </thead>
       <tbody>
       <tr repeat.for="island of filterIslands">
-        <td> ${island.name} </td>
-
+        <td> ${island.region.region} </td>
+        <td>  ${island.name}</td>
+        <td>  ${island.latitude} </td>
+        <td>  ${island.longitude} </td>
       </tr>
       </tbody>
     </table>
-  </article>
 </template>
