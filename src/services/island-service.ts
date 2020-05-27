@@ -20,20 +20,21 @@ export class IslandService {
     });
   }
 
-  async getRegionCategories() { // retrieve all categories from the backend and store in local regionCategories array
-    const response = await this.httpClient.get('/api/regionCategories');
+  async getRegionCategories() { // retrieve a lean region/categories from the backend and store in local regionCategories array
+    const response = await this.httpClient.get('/api/regions/listRegions');
     this.regionCategories = await response.content;
     console.log(`here in islandService ${this.regionCategories}`);
   }
 
   async categoryFilter(category: RegionCategory) { // pass the category selected by the search filter to the backend and retrieve the islands associate with this category
     this.filterIslands.splice(0,this.filterIslands.length); // clear the filterIslands array before each filter request
-    const response = await this.httpClient.get('/api/regionCategories/' + category.region);
+    const response = await this.httpClient.get('/api/islands/regionCategories/' + category.region);
     const categoryFilter = await response.content;
     categoryFilter.forEach(island =>
       this.filterIslands.push(island)); // go through the returned list of islands and add to the filterIslands array that is bound to the category-list custom element
   }
 
+  // NOTE --> getRegions will retrieve lean region objects. When passing a region to backend as part of addIsland I only pass the region ID
 
   async addRegionCategory() {
     // const response = await this.httpClient.get('/api/regionCategories');
@@ -41,19 +42,26 @@ export class IslandService {
     // console.log(`here in islandService ${this.regionCategories}`);
   }
 
-  // need to change this to send to backend
   async addIsland(regionCategory: RegionCategory, name: string, description: string, latitude: number, longitude: number) {
-    const island = {
-      regionCategory: regionCategory,
-      name: name,
-      description: description,
-      latitude: latitude,
-      longitude: longitude,
-    };
-    this.islands.push(island);
-    this.islandTotal = this.islandTotal + 1; // increment the island count by 1
-    this.ea.publish(new TotalIslandUpdate(this.islandTotal));
-    console.log('Total Islands so far ' + this.islandTotal);
+    try {
+      const island = {
+        regionCategory: regionCategory._id, // regionCategory contains the lean details of each Region, here I pass back just the ID for the island to the backend
+        name: name,
+        description: description,
+        latitude: latitude,
+        longitude: longitude,
+      };
+      const response = await this.httpClient.post('/api/islands/addIsland', island);
+      const newIsland = await response.content;
+      if (response.isSuccess) {
+        this.islands.push(newIsland);
+        this.islandTotal = this.islandTotal + 1; // increment the island count by 1
+        this.ea.publish(new TotalIslandUpdate(this.islandTotal));
+        return "Island added successfully"
+      } else return 'Error adding an Island'
+    } catch (err) {
+      return 'Error adding an Island';
+    }
   }
 
   // async getUsers() {
