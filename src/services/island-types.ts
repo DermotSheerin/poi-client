@@ -1,6 +1,6 @@
 export interface RegionCategory {
   region: string;
- // _id : string; // figure out this, do i need it if retrieving regions from mongo or will it cause problems when creating a region???
+  _id : string; // When I was adding an island and referencing regionCategory._id it complained that Property '_id' did not exist for type 'RegionCategory'
 }
 
 export interface Island {
@@ -17,5 +17,5 @@ export interface User {
   lastName: string;
   email: string;
   password: string;
-  _id : string;
+  // _id : string;
 }
