@@ -8,8 +8,7 @@ export interface Island {
   name: string,
   description: string,
   latitude: number,
-  longitude: number,
-  // _id : string;
+  longitude: number, // NOTE when creating an island, the userId is added at the backend so no need for _id field here
 }
 
 export interface User {
