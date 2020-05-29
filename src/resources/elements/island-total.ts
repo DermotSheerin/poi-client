@@ -13,6 +13,7 @@ export class IslandTotal {
     //this.islandTotal = ds.islandTotal; DONT THINK THIS NEEDS TO BE SET SEEING AS WE ARE BOUND TO THE TOTAL IN ISLAND VIEW ABOVE????
     this.ea.subscribe(TotalIslandUpdate, msg => {
       this.islandTotal = msg.islandTotal;
+      console.log(`here in Island-Total Constructor`)
     });
   }
 
