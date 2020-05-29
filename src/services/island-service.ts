@@ -2,7 +2,7 @@ import { inject, Aurelia } from 'aurelia-framework';
 import { Router } from 'aurelia-router';
 import { PLATFORM } from 'aurelia-pal';
 import {Island, RegionCategory } from "./island-types";
-import { HttpClient } from 'aurelia-http-client';
+import {HttpClient, HttpResponseMessage} from 'aurelia-http-client';
 import { EventAggregator } from 'aurelia-event-aggregator';
 import {TotalIslandUpdate} from "./messages";
 
@@ -18,12 +18,13 @@ export class IslandService {
       http.withBaseUrl('http://localhost:3000');
       console.log(`here in Island-Service Constructor`);
     });
+    this.getRegionCategories(); // this function call was initially inside the retrieveUserPOIDetails function triggered during login however the regionCategories array was not consistently showing
+    // when the user logged in successfully. Placing the function call here meant the array was populated prior to user login. This is fine as I am not implementing custom regions per user.
   }
 
   async getRegionCategories() { // retrieve a lean region/categories from the backend and store in local regionCategories array
     const response = await this.httpClient.get('/api/regions/listRegions');
-    this.regionCategories = await response.content;
-    console.log(`here in islandService ${this.regionCategories}`);
+    this.regionCategories = response.content;
   }
 
   async categoryFilter(category: RegionCategory) { // pass the category selected by the search filter to the backend and retrieve the islands associate with this category
@@ -91,18 +92,23 @@ export class IslandService {
   async login(email: string, password: string) {
     let success = false;
     try {
+      console.log('test');
       const response = await this.httpClient.post('/api/users/authenticate', { email: email, password: password });
       const status = await response.content;
       if (status.success) {
-        this.httpClient.configure((configuration) => { // retrieve and remember the token if we have authenticated successfully..... and the including this header in all subsequent requests.
+          this.httpClient.configure((configuration) => { // retrieve and remember the token if we have authenticated successfully..... and including this header in all subsequent requests.
           configuration.withHeader('Authorization', 'bearer ' + status.token);
+          console.log('did u get test');
         });
 
         // when a user successfully logs in we can store the token in LocalStorage
         localStorage.islandStorage = JSON.stringify(response.content);
 
-        // on login retrieve the Regions from model on server side
-        await this.getRegionCategories();
+        // retrieve the userId that is passed back by authenticate function at backend during login
+        const userId = response.content.user;
+
+        // on successful user login, call the retrieveUserPOIDetails function to retrieve the Islands created by the user
+        this.retrieveUserPOIDetails(userId);
 
         // on login, clear the filterIslands array
         this.filterIslands.splice(0,this.filterIslands.length);
@@ -116,7 +122,14 @@ export class IslandService {
     return success;
   }
 
-  // clear the token
+  // during login this function is called to retrieve the region and island details for the user
+  async retrieveUserPOIDetails(userId) {
+    //await this.getRegionCategories(); // call getRegionCategories function to retrieve the list of regions and store in regionCategories array
+    let response = await this.httpClient.get('/api/islands/getUserIslands/' + userId);
+    this.islands =  await response.content; // store list of user islands in islands array
+}
+
+  // clear the token on logout
   logout() {
     localStorage.islandStorage = null;
     this.httpClient.configure(configuration => {
