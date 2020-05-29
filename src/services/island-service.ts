@@ -18,11 +18,13 @@ export class IslandService {
       http.withBaseUrl('http://localhost:3000');
       console.log(`here in Island-Service Constructor`);
     });
+    this.getRegionCategories(); // this function call was initially inside the retrieveUserPOIDetails function triggered during login however the regionCategories array was not consistently showing
+    // when the user logged in successfully. Placing the function call here meant the array was populated prior to user login. This is fine as I am not implementing custom regions per user.
   }
 
   async getRegionCategories() { // retrieve a lean region/categories from the backend and store in local regionCategories array
     const response = await this.httpClient.get('/api/regions/listRegions');
-    this.regionCategories = await response.content;
+    this.regionCategories = response.content;
   }
 
   async categoryFilter(category: RegionCategory) { // pass the category selected by the search filter to the backend and retrieve the islands associate with this category
@@ -105,7 +107,7 @@ export class IslandService {
         // retrieve the userId that is passed back by authenticate function at backend during login
         const userId = response.content.user;
 
-        // on successful user login, call the retrieveUserPOIDetails function to retrieve the regionCategories list and Islands created by the user
+        // on successful user login, call the retrieveUserPOIDetails function to retrieve the Islands created by the user
         this.retrieveUserPOIDetails(userId);
 
         // on login, clear the filterIslands array
@@ -122,7 +124,7 @@ export class IslandService {
 
   // during login this function is called to retrieve the region and island details for the user
   async retrieveUserPOIDetails(userId) {
-    await this.getRegionCategories(); // call getRegionCategories function to retrieve the list of regions and store in regionCategories array
+    //await this.getRegionCategories(); // call getRegionCategories function to retrieve the list of regions and store in regionCategories array
     let response = await this.httpClient.get('/api/islands/getUserIslands/' + userId);
     this.islands =  await response.content; // store list of user islands in islands array
 }
