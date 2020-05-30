@@ -1,7 +1,7 @@
 import { inject, Aurelia } from 'aurelia-framework';
 import { Router } from 'aurelia-router';
 import { PLATFORM } from 'aurelia-pal';
-import {Island, RegionCategory } from "./island-types";
+import {Island, RegionCategory, User} from "./island-types";
 import {HttpClient, HttpResponseMessage} from 'aurelia-http-client';
 import { EventAggregator } from 'aurelia-event-aggregator';
 import {TotalIslandUpdate} from "./messages";
@@ -12,6 +12,7 @@ export class IslandService {
   regionCategories: RegionCategory[] = [];
   filterIslands: Island[] = [];
   islandTotal = 0;
+  userDetails: User;
 
   constructor(private httpClient: HttpClient, private ea: EventAggregator, private au: Aurelia, private router: Router) {
     httpClient.configure(http => {
@@ -92,7 +93,6 @@ export class IslandService {
   async login(email: string, password: string) {
     let success = false;
     try {
-      console.log('test');
       const response = await this.httpClient.post('/api/users/authenticate', { email: email, password: password });
       const status = await response.content;
       if (status.success) {
@@ -104,11 +104,11 @@ export class IslandService {
         // when a user successfully logs in we can store the token in LocalStorage
         localStorage.islandStorage = JSON.stringify(response.content);
 
-        // retrieve the userId that is passed back by authenticate function at backend during login
-        const userId = response.content.user;
+        // retrieve the user that is passed back by authenticate function at backend during login and store as local variable
+        this.userDetails = response.content.user;
 
         // on successful user login, call the retrieveUserPOIDetails function to retrieve the Islands created by the user
-        this.retrieveUserPOIDetails(userId);
+        this.retrieveUserPOIDetails(this.userDetails._id);
 
         // on login, clear the filterIslands array
         this.filterIslands.splice(0,this.filterIslands.length);
@@ -122,12 +122,11 @@ export class IslandService {
     return success;
   }
 
-  // during login this function is called to retrieve the region and island details for the user
+  // during login this function is called to retrieve the island details for the user
   async retrieveUserPOIDetails(userId) {
-    //await this.getRegionCategories(); // call getRegionCategories function to retrieve the list of regions and store in regionCategories array
     let response = await this.httpClient.get('/api/islands/getUserIslands/' + userId);
     this.islands =  await response.content; // store list of user islands in islands array
-}
+  }
 
   // clear the token on logout
   logout() {
