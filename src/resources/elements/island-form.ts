@@ -16,9 +16,6 @@ export class IslandForm {
   selectedRegionCategory: RegionCategory = null;
   response = "";
 
-  @bindable
-  userDetails: User;
-
   constructor(private ds: IslandService) {
     console.log(`here in Island-Form Constructor`);
   }
