@@ -31,7 +31,7 @@ export class IslandService {
   async categoryFilter(category: RegionCategory) { // pass the category selected by the search filter to the backend and retrieve the islands associate with this category
     this.filterIslands.splice(0,this.filterIslands.length); // clear the filterIslands array before each filter request
     const response = await this.httpClient.get('/api/islands/regionCategories/' + category.region);
-    const categoryFilter = await response.content;
+    const categoryFilter = response.content;
     categoryFilter.forEach(island =>
       this.filterIslands.push(island)); // go through the returned list of islands and add to the filterIslands array that is bound to the category-list custom element
   }
@@ -63,6 +63,23 @@ export class IslandService {
       } else return 'Error adding an Island'
     } catch (err) {
       return 'Error adding an Island';
+    }
+  }
+
+  async editIsland(islandId: string, regionCategory: RegionCategory, name: string, description: string, latitude: number, longitude: number) {
+    try {
+      const updateIsland = {
+        islandId: islandId,
+        regionCategory: regionCategory, // regionCategory contains the lean details of each Region, here I pass back just the ID for the island to the backend
+        name: name,
+        description: description,
+        latitude: latitude,
+        longitude: longitude,
+      };
+      const response = await this.httpClient.put('/api/islands/editIslandDetails', updateIsland);
+      return "Island Updated successfully"
+    } catch (err) {
+      return 'Error Updating Island';
     }
   }
 
@@ -111,7 +128,7 @@ export class IslandService {
         this.retrieveUserPOIDetails(this.userDetails._id);
 
         // on login, clear the filterIslands array
-        this.filterIslands.splice(0,this.filterIslands.length);
+        this.clearFilterIslands()
 
         this.changeRouter(PLATFORM.moduleName('app'));
         success = status.success;
@@ -122,10 +139,21 @@ export class IslandService {
     return success;
   }
 
+  // function to clear filter islands array on Island page load/reload
+  clearFilterIslands() {
+    this.filterIslands.splice(0,this.filterIslands.length);
+  }
+
   // during login this function is called to retrieve the island details for the user
   async retrieveUserPOIDetails(userId) {
     let response = await this.httpClient.get('/api/islands/getUserIslands/' + userId);
     this.islands =  await response.content; // store list of user islands in islands array
+  }
+
+  // retrieve the island details to View/Edit when selected in category list
+  async retrieveIslandToUpdate(islandId) {
+    let response = await this.httpClient.get('/api/islands/showIslandDetails/' + islandId);
+    return response.content;
   }
 
   // clear the token on logout

@@ -1,0 +1,39 @@
+<template>
+  <h1 class="ui header">Update Island Details</h1>
+  <form submit.trigger="editIsland()" class="ui primary segment form">
+    <div class="one field">
+      <label>Region/Category</label>
+      <!--      https://aurelia.io/docs/binding/selects#select-number-->
+      <div class="field">
+        <select value.bind="selectedRegionCategory">
+          <option value="${currentIslandDetails.region.region}">${currentIslandDetails.region.region}</option>
+          <option repeat.for="region of regionCategories" model.bind="region.region" >${region.region}</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Island Name</label>
+        <input value.bind="name" value="${currentIslandDetails.name}"/>
+      </div>
+    </div>
+    <div class="field">
+      <label>Description</label>
+<!--      <input value.bind="description" value="${currentIslandDetails.description}" />-->
+      <textarea rows="10" value.bind="description" value="${currentIslandDetails.description}" ></textarea>
+    </div>
+    <div class="two fields">
+      <div class="field">
+        <label>Latitude</label>
+        <input value.bind="latitude" value="${currentIslandDetails.latitude}"/>
+      </div>
+      <div class="field">
+        <label>Longitude</label>
+        <input value.bind="longitude" value="${currentIslandDetails.longitude}"/>
+      </div>
+    </div>
+    <h2><b>${response}</b></h2>
+    <button class="ui blue submit button">Save</button>
+  </form>
+  <a href="islands">
+    <button class="ui red submit button">Return to Dashboard</button>
+  </a>
+</template>

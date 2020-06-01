@@ -4,6 +4,6 @@ import {Island} from '../../services/island-types';
 
 export class CategoryList {
   @bindable
-  filterIslands: Island[];
+  filterIslands: Island[] = null;
 
 }
