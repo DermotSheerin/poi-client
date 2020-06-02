@@ -10,6 +10,7 @@ export interface RegionCategory {
 
 export interface Island {
   regionCategory: RegionCategory;
+  // region: RegionCategory
   user: User;
   name: string;
   description: string;

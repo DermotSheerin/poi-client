@@ -36,6 +36,24 @@ export class IslandService {
       this.filterIslands.push(island)); // go through the returned list of islands and add to the filterIslands array that is bound to the category-list custom element
   }
 
+  // async localFilter(category: RegionCategory) { // pass the category selected by the search filter to the backend and retrieve the islands associate with this category
+  //   this.filterIslands.splice(0,this.filterIslands.length); // clear the filterIslands array before each filter request
+  //   //const response = await this.httpClient.get('/api/islands/regionCategories/' + category.region);
+  //   //const categoryFilter = response.content;
+  //   // this.islands.forEach(island => {
+  //   //   // console.log(island.regionCategory.region);
+  //   //   if (island.regionCategory.region === category.region) {
+  //   //     this.filterIslands.push(island); // go through the returned list of islands and add to the filterIslands array that is bound to the category-list custom element
+  //   //   }
+  //   // });
+  //   for (let i = 0; i < this.islands.length; i++) {
+  //     console.log(this.islands[i].region.region);
+  //     // if (this.islands[i].regionCategory.region === category.region) {
+  //     //   this.filterIslands.push(this.islands[i]);
+  //     // }
+  //   }
+  // }
+
   // NOTE --> getRegions will retrieve lean region objects. When passing a region to backend as part of addIsland I only pass the region ID
 
   async addRegionCategory() {
@@ -77,9 +95,20 @@ export class IslandService {
         longitude: longitude,
       };
       const response = await this.httpClient.put('/api/islands/editIslandDetails', updateIsland);
-      return "Island Updated successfully"
+      //return "Island Updated successfully"
+      return response.content;
     } catch (err) {
       return 'Error Updating Island';
+    }
+  }
+
+  async deleteIsland(islandId: string) {
+    try {
+      const response = await this.httpClient.delete('/api/islands/deleteIsland/' + islandId);
+      console.log(response.content);
+      return response.content;
+    } catch (err) {
+      return 'Error Deleting Island'
     }
   }
 
@@ -142,6 +171,21 @@ export class IslandService {
   // function to clear filter islands array on Island page load/reload
   clearFilterIslands() {
     this.filterIslands.splice(0,this.filterIslands.length);
+  }
+
+  // // function to refresh list of filtered islands after an island is modified
+  // refreshFilterIslands(region) {
+  //   this.categoryFilter(region);
+  // }
+
+  // function to replace an updated island element in the array
+  updateFilterIslandAfterEdit(islandIndex, island){
+    this.filterIslands.splice(islandIndex,1, island);
+  }
+
+  // function to remove island from filterIsland array after an island is deleted
+  removeIslandFilterIslands(islandIndex) {
+    this.filterIslands.splice(islandIndex, 1);
   }
 
   // during login this function is called to retrieve the island details for the user
