@@ -16,7 +16,7 @@ export class Islands {
     this.islandTotal = ds.islandTotal;
     this.filterIslands = ds.filterIslands;
     this.userDetails = ds.userDetails;
-    ds.clearFilterIslands(); // clear the filter search each time the Islands main page is accessed
+    //ds.clearFilterIslands(); // clear the filter search each time the Islands main page is accessed
     console.log(`here in Island Constructor`);
   }
 

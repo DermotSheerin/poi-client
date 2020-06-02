@@ -28,35 +28,52 @@ export class IslandService {
     this.regionCategories = response.content;
   }
 
-  async categoryFilter(category: RegionCategory) { // pass the category selected by the search filter to the backend and retrieve the islands associate with this category
+  // async categoryFilter(category: RegionCategory) { // pass the category selected by the search filter to the backend and retrieve the islands associate with this category
+  //   this.filterIslands.splice(0,this.filterIslands.length); // clear the filterIslands array before each filter request
+  //   const response = await this.httpClient.get('/api/islands/regionCategories/' + category.region);
+  //   const categoryFilter = response.content;
+  //   categoryFilter.forEach(island =>
+  //     this.filterIslands.push(island)); // go through the returned list of islands and add to the filterIslands array that is bound to the category-list custom element
+  // }
+
+  async localFilter(category: RegionCategory) { // pass the category selected by the search filter to the backend and retrieve the islands associate with this category
     this.filterIslands.splice(0,this.filterIslands.length); // clear the filterIslands array before each filter request
-    const response = await this.httpClient.get('/api/islands/regionCategories/' + category.region);
-    const categoryFilter = response.content;
-    categoryFilter.forEach(island =>
-      this.filterIslands.push(island)); // go through the returned list of islands and add to the filterIslands array that is bound to the category-list custom element
-  }
+
+    if (category.region != "All Regions") { // go through the islands array and push any islands that are in the region requested into the filterIslands array to be displayed
+      for (let i = 0; i < this.islands.length; i++) {
+        console.log(this.islands[i].region.region);
+        if (this.islands[i].region.region === category.region) {
+          this.filterIslands.push(this.islands[i]);
+        }
+      }
+    }
+      else { // else add all islands to the filterArray to be displayed
+        this.islands.forEach(island => {
+              this.filterIslands.push(island);
+            });
+      }
+    }
 
   // NOTE --> getRegions will retrieve lean region objects. When passing a region to backend as part of addIsland I only pass the region ID
-
   async addRegionCategory() {
     // const response = await this.httpClient.get('/api/regionCategories');
     // this.regionCategories = await response.content;
     // console.log(`here in islandService ${this.regionCategories}`);
   }
 
-  async addIsland(regionCategory: RegionCategory, name: string, description: string, latitude: number, longitude: number) {
+  async addIsland(region: RegionCategory, name: string, description: string, latitude: number, longitude: number) {
     try {
       const island = {
-        regionCategory: regionCategory._id, // regionCategory contains the lean details of each Region, here I pass back just the ID for the island to the backend
+        region: region, // regionCategory contains the lean details of each Region, here I pass back just the ID for the island to the backend
         name: name,
         description: description,
         latitude: latitude,
         longitude: longitude,
       };
       const response = await this.httpClient.post('/api/islands/addIsland', island);
-      const newIsland = await response.content;
+      const newIsland = await this.httpClient.get('/api/islands/showIslandDetails/' + response.content._id); // retrieve entire island object
       if (response.isSuccess) {
-        this.islands.push(newIsland);
+        this.islands.push(newIsland.content.islandDetails);
         this.islandTotal = this.islandTotal + 1; // increment the island count by 1
         this.ea.publish(new TotalIslandUpdate(this.islandTotal));
         return "Island added successfully"
@@ -66,20 +83,37 @@ export class IslandService {
     }
   }
 
-  async editIsland(islandId: string, regionCategory: RegionCategory, name: string, description: string, latitude: number, longitude: number) {
+  async editIsland(islandId: string, region: RegionCategory, name: string, description: string, latitude: number, longitude: number) {
     try {
       const updateIsland = {
         islandId: islandId,
-        regionCategory: regionCategory, // regionCategory contains the lean details of each Region, here I pass back just the ID for the island to the backend
+        region: region, // regionCategory contains the lean details of each Region, here I pass back just the ID for the island to the backend
         name: name,
         description: description,
         latitude: latitude,
         longitude: longitude,
       };
       const response = await this.httpClient.put('/api/islands/editIslandDetails', updateIsland);
-      return "Island Updated successfully"
+
+      // retrieve the user that is passed back by authenticate function at backend and store as local variable
+      this.userDetails = response.content.user;
+
+      // call the retrieveUserPOIDetails function to retrieve the latest Island details for the user and push into the islands array
+      this.retrieveUserPOIDetails(this.userDetails._id);
+
+      //return "Island Updated successfully"
+      return response.content;
     } catch (err) {
       return 'Error Updating Island';
+    }
+  }
+
+  async deleteIsland(islandId: string) {
+    try {
+      const response = await this.httpClient.delete('/api/islands/deleteIsland/' + islandId);
+      return response.content;
+    } catch (err) {
+      return 'Error Deleting Island'
     }
   }
 
@@ -115,7 +149,6 @@ export class IslandService {
       if (status.success) {
           this.httpClient.configure((configuration) => { // retrieve and remember the token if we have authenticated successfully..... and including this header in all subsequent requests.
           configuration.withHeader('Authorization', 'bearer ' + status.token);
-          console.log('did u get test');
         });
 
         // when a user successfully logs in we can store the token in LocalStorage
@@ -142,6 +175,26 @@ export class IslandService {
   // function to clear filter islands array on Island page load/reload
   clearFilterIslands() {
     this.filterIslands.splice(0,this.filterIslands.length);
+  }
+
+  // // function to refresh list of filtered islands after an island is modified
+  // refreshFilterIslands(region) {
+  //   this.categoryFilter(region);
+  // }
+
+  // function to replace an updated island element in the array
+  updateFilterIslandAfterEdit(islandIndex, island){
+    this.filterIslands.splice(islandIndex,1, island);
+  }
+
+  // function to remove island from filterIsland array after an island is deleted
+  removeIslandFilterIslands(islandIndex) {
+    this.filterIslands.splice(islandIndex, 1);
+  }
+
+  // function to remove island from filterIsland array after an island is deleted
+  removeIndexIsland(islandIndex) {
+    this.islands.splice(islandIndex, 1);
   }
 
   // during login this function is called to retrieve the island details for the user

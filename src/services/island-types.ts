@@ -9,7 +9,8 @@ export interface RegionCategory {
 // are what it expects as a minimum.
 
 export interface Island {
-  regionCategory: RegionCategory;
+  // regionCategory: RegionCategory;
+  region: RegionCategory
   user: User;
   name: string;
   description: string;
