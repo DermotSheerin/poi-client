@@ -27,3 +27,8 @@ export interface User {
   userRole: string;
   _id : string;
 }
+
+export interface Image {
+  url: string;
+  id: string;
+}

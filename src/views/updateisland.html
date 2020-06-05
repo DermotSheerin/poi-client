@@ -1,11 +1,24 @@
 <template>
   <require from="../resources/elements/update-island-form"></require>
+  <require from="../resources/elements/upload"></require>
+  <require from="../resources/elements/card.html"></require>
 
 
-  <div class="ui stacked segment">
-    <div>
-      <update-island-form islands.bind="islands" region-categories.bind="regionCategories" current-island-details.bind="currentIslandDetails" ></update-island-form>
+  <div class="ui grid">
+    <div class="ui ten wide column">
+      <div>
+        <update-island-form islands.bind="islands" region-categories.bind="regionCategories" current-island-details.bind="currentIslandDetails" ></update-island-form>
+      </div>
+    </div>
+    <div class="ui five wide column">
+      <div>
+        <upload></upload>
+      </div>
+      <div>
+        <card images.bind="images"></card>
+      </div>
     </div>
   </div>
+
 
 </template>

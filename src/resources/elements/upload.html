@@ -1,0 +1,35 @@
+<template>
+<!--  <div class="uk-card uk-card-primary uk-card-body">-->
+<!--    <div class="uk-card uk-card-primary uk-card-body">-->
+<!--      <h3 class="uk-card-title">Image Upload</h3>-->
+<!--      <form class="uk-form-horizontal" submit.delegate="uploadImage()">-->
+<!--        <div class="uk-margin">-->
+<!--          <label class="uk-form-label">Select Image</label>-->
+<!--          <div class="uk-form-controls">-->
+<!--            <input type="file" class="uk-input" files.bind="selectedFiles" accept="image/png, image/jpeg">-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <p uk-margin>-->
+<!--          <input type="submit" value="Upload" class="uk-button uk-button-default" if.bind="selectedFiles.length > 0">-->
+<!--        </p>-->
+<!--      </form>-->
+<!--    </div>-->
+<!--  </div>-->
+
+
+
+
+
+<aside>
+    <h2> Upload an Image</h2>
+  <form class="ui segment form" submit.delegate="uploadImage()">
+    <div class="field">
+      <input type="file" files.bind="selectedFiles" accept="image/png, image/jpeg" required>
+    </div>
+    <button class="ui blue submit button" value="Upload" if.bind="selectedFiles.length > 0">Upload Image</button>
+  </form>
+<!--  <a href="/dashboard/showIslandDetails/{{islandDetails._id}}/deleteImage/{{islandDetails.imageURL.[0].[1]}}" class="ui icon button">-->
+<!--    <i class="red large icon trash alternate">  </i>-->
+<!--  </a>-->
+</aside>
+</template>

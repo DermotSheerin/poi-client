@@ -1,8 +1,13 @@
 import { RouterConfiguration, Router } from 'aurelia-router';
 import { PLATFORM } from 'aurelia-pal';
+import { autoinject } from 'aurelia-framework';
+import { ImageStore } from './services/image-store';
 
+@autoinject
 export class App {
   router: Router;
+
+  constructor(private imageStore: ImageStore) {}
 
   configureRouter(config: RouterConfiguration, router: Router) {
     config.options.pushState = true; // With single page applications, we sometime like to remove the # from the segment to make the url appear more natural. Aurelia support this seamlessly. It needs to be explicitly enabled via pushState configuration

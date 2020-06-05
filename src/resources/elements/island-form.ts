@@ -21,7 +21,7 @@ export class IslandForm {
   }
 
   async addIsland() { // using ds to access methods in IslandService class and access the addIsland method
-    console.log(this.selectedRegionCategory);
+    this.response = ""; // clear any messages from previous activity
     const response = await this.ds.addIsland(this.selectedRegionCategory, this.name, this.description, this.latitude, this.longitude);
     // pass the response to the user if island creation was successful
     this.response = response;
