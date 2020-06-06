@@ -20,7 +20,7 @@ export class UpdateIslandForm {
   selectedRegionCategory: RegionCategory = null;
 
   constructor(private ds: IslandService) {
-    console.log(`here in Edit-Island-Form Constructor`);
+    console.log(`here is island ID UPDATE-ISLAND-FORM CONSTRUCTOR ${this.currentIslandDetails}`);
   }
 
   async editIsland() { // https://aurelia.io/docs/binding/binding-behaviors#self

@@ -5,18 +5,18 @@ import {Image} from "./island-types";
 
 @autoinject
 export class ImageStore {
-  images: Image[] = [];
-
   cloudinaryClient = new HttpClient();
+  backendClient = new HttpClient();
 
-  // getAllImages(): Image[] {
-  //   return this.images;
-  // }
-
-  async uploadImage(imageFile) {
+  async uploadImage(imageFile, island) {
     this.cloudinaryClient.configure(http => {
       http.withBaseUrl(`https://api.cloudinary.com/v1_1/${environment.cloudinary.name}`);
     });
+
+    this.backendClient.configure(http => {
+      http.withBaseUrl('http://localhost:3000')
+    });
+
 
     const formData = new FormData();
     formData.append('file', imageFile);
@@ -24,12 +24,20 @@ export class ImageStore {
 
     try {
       const response = await this.cloudinaryClient.post('/image/upload', formData);
-
-      this.images.push({ url: response.content.url, id: response.content.asset_id });
+      //island.imageURL.push([response.content.url, response.content.public_id]); // store the URL and public ID of the image in the island image Array
+      const islandResponse = await this.backendClient.post('/api/islands/addImage',
+        {islandId: island._id,
+        image: response.content});
+      return await islandResponse.content;
     } catch (err) {
       console.log(err);
     }
   }
 
-  deleteImage(id) {}
+  async deleteImage(imageId, islandId) {
+    console.log(imageId + islandId);
+    const deleteImage = await this.backendClient.put('/api/islands/deleteImage', {imageId, islandId});
+    console.log(`here in delete image in IMAGE_STORE ${deleteImage}`);
+    return deleteImage;
+  }
 }

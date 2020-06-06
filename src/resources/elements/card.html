@@ -1,15 +1,13 @@
-<template bindable="images">
-
-  <div class="ui link cards" repeat.for="image of images">
-    <div class="card">
+<template>
+  <div class="ui link cards" >
+    <div class="card" repeat.for="image of currentIslandDetails.imageURL">
       <div class="image">
-        <img src="${image.url}" class="ui tiny image">
+        <img src="${image[0]}">
       </div>
       <div class="header">
-<!--        <a href="/dashboard/showIslandDetails/{{../islandDetails._id}}/deleteImage/{{[1]}}" class="ui icon button">-->
-          <i class="icon large red alternate trash"></i> </a>
+        <button click.delegate="deleteImage(image[1])" class="ui icon button" > <i class="icon red alternate trash"></i></button>
       </div>
     </div>
   </div>
-
+  ${prompt}
 </template>
