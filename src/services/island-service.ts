@@ -101,7 +101,6 @@ export class IslandService {
       // call the retrieveUserPOIDetails function to retrieve the latest Island details for the user and push into the islands array
       this.retrieveUserPOIDetails(this.userDetails._id);
 
-      //return "Island Updated successfully"
       return response.content;
     } catch (err) {
       return 'Error Updating Island';
@@ -192,7 +191,7 @@ export class IslandService {
     this.filterIslands.splice(islandIndex, 1);
   }
 
-  // function to remove island from filterIsland array after an island is deleted
+  // function to remove island from islands array after an island is deleted
   removeIndexIsland(islandIndex) {
     this.islands.splice(islandIndex, 1);
   }
