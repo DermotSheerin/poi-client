@@ -1,24 +1,23 @@
 <template>
   <div class="ui stackable two column grid">
     <div class="column">
-      <img class="ui medium image" src="/images/homer2.png">
     </div>
     <div class="column">
       <form submit.delegate="signup($event)" class="ui stacked segment form">
         <h3 class="ui header">Register</h3>
         <div class="two fields">
           <div class="field">
-            <label>First Name</label> <input placeholder="First Name" type="text" value.bind="firstName">
+            <label>First Name</label> <input placeholder="First Name" type="text" value.bind="firstName" required>
           </div>
           <div class="field">
-            <label>Last Name</label> <input placeholder="Last Name" type="text" value.bind="lastName">
+            <label>Last Name</label> <input placeholder="Last Name" type="text" value.bind="lastName" required>
           </div>
         </div>
         <div class="field">
-          <label>Email</label> <input placeholder="Email" type="text" value.bind="email">
+          <label>Email</label> <input placeholder="Email" type="email" value.bind="email" required>
         </div>
         <div class="field">
-          <label>Password</label> <input type="password" value.bind="password">
+          <label>Password</label> <input type="password" value.bind="password" required>
         </div>
         <button class="ui blue submit button">Submit</button>
       </form>
