@@ -1,7 +1,7 @@
 import * as environment from '../../config/environment.json';
 import { HttpClient } from 'aurelia-http-client';
 import { autoinject } from 'aurelia-framework';
-import {Image} from "./island-types";
+
 
 @autoinject
 export class ImageStore {
@@ -10,7 +10,7 @@ export class ImageStore {
 
   async uploadImage(imageFile, island) {
     this.cloudinaryClient.configure(http => {
-      http.withBaseUrl(`https://api.cloudinary.com/v1_1/${environment.cloudinary.name}`);
+      http.withBaseUrl(`https://api.cloudinary.com/v1_1/dsheerincloud`);
     });
 
     this.backendClient.configure(http => {
@@ -20,7 +20,7 @@ export class ImageStore {
 
     const formData = new FormData();
     formData.append('file', imageFile);
-    formData.append('upload_preset', `${environment.cloudinary.preset}`);
+    formData.append('upload_preset', `ia6ew6aq`);
 
     try {
       const response = await this.cloudinaryClient.post('/image/upload', formData);

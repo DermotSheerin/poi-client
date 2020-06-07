@@ -3,7 +3,7 @@ import { IslandService } from '../services/island-service';
 
 @inject(IslandService)
 export class Login {
-  email = 'dee@gmail.com';
+  email = 'sheerin@gmail.com';
   password = '1234';
   prompt = '';
 

@@ -13,11 +13,12 @@ export class IslandService {
   filterIslands: Island[] = [];
   islandTotal = 0;
   userDetails: User;
+  users: User[] = [];
 
   constructor(private httpClient: HttpClient, private ea: EventAggregator, private au: Aurelia, private router: Router) {
     httpClient.configure(http => {
       http.withBaseUrl('http://localhost:3000');
-      console.log(`here in Island-Service Constructor`);
+      console.log(`here in Island-Service Constructor users - ${this.users}`);
     });
     this.getRegionCategories(); // this function call was initially inside the retrieveUserPOIDetails function triggered during login however the regionCategories array was not consistently showing
     // when the user logged in successfully. Placing the function call here meant the array was populated prior to user login. This is fine as I am not implementing custom regions per user.
@@ -28,13 +29,6 @@ export class IslandService {
     this.regionCategories = response.content;
   }
 
-  // async categoryFilter(category: RegionCategory) { // pass the category selected by the search filter to the backend and retrieve the islands associate with this category
-  //   this.filterIslands.splice(0,this.filterIslands.length); // clear the filterIslands array before each filter request
-  //   const response = await this.httpClient.get('/api/islands/regionCategories/' + category.region);
-  //   const categoryFilter = response.content;
-  //   categoryFilter.forEach(island =>
-  //     this.filterIslands.push(island)); // go through the returned list of islands and add to the filterIslands array that is bound to the category-list custom element
-  // }
 
   async localFilter(category: RegionCategory) { // pass the category selected by the search filter to the backend and retrieve the islands associate with this category
     this.filterIslands.splice(0,this.filterIslands.length); // clear the filterIslands array before each filter request
@@ -53,13 +47,6 @@ export class IslandService {
             });
       }
     }
-
-  // NOTE --> getRegions will retrieve lean region objects. When passing a region to backend as part of addIsland I only pass the region ID
-  async addRegionCategory() {
-    // const response = await this.httpClient.get('/api/regionCategories');
-    // this.regionCategories = await response.content;
-    // console.log(`here in islandService ${this.regionCategories}`);
-  }
 
   async addIsland(region: RegionCategory, name: string, description: string, latitude: number, longitude: number) {
     try {
@@ -116,14 +103,6 @@ export class IslandService {
     }
   }
 
-  // async getUsers() {
-  //   const response = await this.httpClient.get('/api/users');
-  //   const users = await response.content;
-  //   users.forEach(user => {
-  //     this.users.set(user.email, user);
-  //   });
-  // }
-
   async signup(firstName: string, lastName: string, email: string, password: string) {
     const user = {
       firstName: firstName,
@@ -156,14 +135,22 @@ export class IslandService {
         // retrieve the user that is passed back by authenticate function at backend during login and store as local variable
         this.userDetails = response.content.user;
 
-        // on successful user login, call the retrieveUserPOIDetails function to retrieve the Islands created by the user
-        this.retrieveUserPOIDetails(this.userDetails._id);
+        if (this.userDetails.userRole != "admin") {
+          // on successful user login, call the retrieveUserPOIDetails function to retrieve the Islands created by the user
+          this.retrieveUserPOIDetails(this.userDetails._id);
 
-        // on login, clear the filterIslands array
-        this.clearFilterIslands()
+          // on login, clear the filterIslands array
+          this.clearFilterIslands()
 
-        this.changeRouter(PLATFORM.moduleName('app'));
-        success = status.success;
+          this.changeRouter(PLATFORM.moduleName('app'));
+          success = status.success;
+        }
+        else {
+          const getUsers = await this.getUsers(); // if admin user trigger the function to retrieve all users and store in local array
+          // console.log(`here is all users ${getUsers}`);
+          this.changeRouter(PLATFORM.moduleName('appAdmin'));
+          success = status.success;
+        }
       }
     } catch (e) {
       success = false;
@@ -171,15 +158,29 @@ export class IslandService {
     return success;
   }
 
+  // admin page retrieve all users
+  async getUsers() {
+    const response = await this.httpClient.get('/api/users');
+    this.users = response.content;
+  }
+
+  async findUser(userId) {
+    const response = await this.httpClient.get('/api/users/' + userId);
+    return response;
+  }
+
+  async deleteUser(userId) {
+    const response = await this.httpClient.delete('/api/users/' + userId);
+    await this.getUsers();
+    if (response.isSuccess) {
+      return {response: response, users: this.users}
+    }
+  }
+
   // function to clear filter islands array on Island page load/reload
   clearFilterIslands() {
     this.filterIslands.splice(0,this.filterIslands.length);
   }
-
-  // // function to refresh list of filtered islands after an island is modified
-  // refreshFilterIslands(region) {
-  //   this.categoryFilter(region);
-  // }
 
   // function to replace an updated island element in the array
   updateFilterIslandAfterEdit(islandIndex, island){
@@ -198,6 +199,7 @@ export class IslandService {
 
   // during login this function is called to retrieve the island details for the user
   async retrieveUserPOIDetails(userId) {
+    console.log(userId);
     let response = await this.httpClient.get('/api/islands/getUserIslands/' + userId);
     this.islands =  await response.content; // store list of user islands in islands array
   }
