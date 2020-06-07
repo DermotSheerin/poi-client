@@ -17,7 +17,7 @@ export class IslandService {
 
   constructor(private httpClient: HttpClient, private ea: EventAggregator, private au: Aurelia, private router: Router) {
     httpClient.configure(http => {
-      http.withBaseUrl('http://localhost:3000');
+      http.withBaseUrl('https://ds-poi-nodejs.herokuapp.com/');
       console.log(`here in Island-Service Constructor users - ${this.users}`);
     });
     this.getRegionCategories(); // this function call was initially inside the retrieveUserPOIDetails function triggered during login however the regionCategories array was not consistently showing
