@@ -17,9 +17,9 @@ export class CategoryForm {
     console.log(`here in Category-Form Constructor`)
   }
 
-  addRegionCategory() { //
-    this.ds.addRegionCategory();
-  }
+  // addRegionCategory() { //
+  //   this.ds.addRegionCategory();
+  // }
 
   // async categoryFilter() { // pass the selected region to the categoryFilter in IslandService class to retrieve the islands belonging to this region
   //   let categoryFilter = await this.ds.categoryFilter(this.selectedRegionCategory);
