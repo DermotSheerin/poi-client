@@ -104,18 +104,22 @@ export class IslandService {
   }
 
   async signup(firstName: string, lastName: string, email: string, password: string) {
-    const user = {
-      firstName: firstName,
-      lastName: lastName,
-      email: email,
-      password: password
-    };
-    const response = await this.httpClient.post('/api/users', user);
-    const newUser = await response.content;
-    if(newUser) {
-      this.changeRouter(PLATFORM.moduleName('app'));
-    } else {
-      return false;
+    try {
+      const user = {
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        password: password
+      };
+      const response = await this.httpClient.post('/api/users', user);
+      const newUser = await response.content;
+      if(newUser) {
+        this.changeRouter(PLATFORM.moduleName('start'));
+      } else {
+        return false;
+      }
+    } catch (err) {
+      return err
     }
   }
 
@@ -170,10 +174,14 @@ export class IslandService {
   }
 
   async deleteUser(userId) {
-    const response = await this.httpClient.delete('/api/users/' + userId);
-    await this.getUsers();
-    if (response.isSuccess) {
-      return {response: response, users: this.users}
+    try {
+      const response = await this.httpClient.delete('/api/users/' + userId);
+      await this.getUsers();
+      if (response.isSuccess) {
+        return {response: response, users: this.users}
+      }
+    } catch (err) {
+      return err.message
     }
   }
 

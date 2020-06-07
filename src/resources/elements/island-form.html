@@ -12,21 +12,21 @@
       </div>
       <div class="field">
         <label>Island Name</label>
-        <input value.bind="name"/>
+        <input value.bind="name" required>
       </div>
     </div>
     <div class="field">
       <label>Description</label>
-      <input value.bind="description"/>
+      <input value.bind="description" required>
     </div>
     <div class="two fields">
       <div class="field">
         <label>Latitude</label>
-        <input value.bind="latitude"/>
+        <input value.bind="latitude" type="number"  step="any" required>
       </div>
       <div class="field">
         <label>Longitude</label>
-        <input value.bind="longitude"/>
+        <input value.bind="longitude" type="number"  step="any" required>
       </div>
     </div>
     <button class="ui blue submit button">Add Island</button>

@@ -1,4 +1,3 @@
-import * as environment from '../../config/environment.json';
 import { HttpClient } from 'aurelia-http-client';
 import { autoinject } from 'aurelia-framework';
 
@@ -24,7 +23,6 @@ export class ImageStore {
 
     try {
       const response = await this.cloudinaryClient.post('/image/upload', formData);
-      //island.imageURL.push([response.content.url, response.content.public_id]); // store the URL and public ID of the image in the island image Array
       const islandResponse = await this.backendClient.post('/api/islands/addImage',
         {islandId: island._id,
         image: response.content});

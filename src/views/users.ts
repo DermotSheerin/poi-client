@@ -12,9 +12,6 @@ export class Users {
   constructor(private ds: IslandService) {  // The islands array is established as a reference to the islands array defined in the IslandService class.
     this.users = this.ds.users;
     this.islands = this.ds.islands;
-    console.log(`here in users constructor ${this.users}`)
-
   }
-
 
 }
