@@ -1,0 +1,29 @@
+<template>
+
+  <div>
+    <h2> ${currentUser.firstName} ${currentUser.lastName}</h2>
+    <article class="four wide column">
+      <table class="ui striped celled table segment">
+        <thead>
+        <tr>
+          <th class="one wide">Regions/Category</th>
+          <th class="one wide">Island Name</th>
+          <th class="four wide">Description</th>
+          <th class="one wide"> Delete Island </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr repeat.for="island of islands">
+          <td> ${island.region.region} </td>
+          <td> ${island.name} </td>
+          <td> ${island.description} </td>
+          <td>
+            <button click.delegate= "deleteIsland(island)" class="ui icon button" > <i class="icon trash"></i></button></td>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </article>
+  </div>
+
+</template>

@@ -1,0 +1,32 @@
+<template>
+  <require from="../resources/elements/update-island-form"></require>
+  <require from="../resources/elements/upload"></require>
+  <require from="../resources/elements/card"></require>
+
+  <section class="ui raised segment">
+    <div class="ui grid">
+      <div class="ui ten wide column">
+        <div>
+          <update-island-form islands.bind="islands" region-categories.bind="regionCategories" current-island-details.bind="currentIslandDetails" ></update-island-form>
+        </div>
+      </div>
+      <div class="ui five wide column">
+        <div>
+          <upload current-island-details.two-way="currentIslandDetails"></upload>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="ui raised segment">
+    <h2 class="ui header">Image Gallery</h2>
+    <div class="ui divider"></div>
+    <div class="ui grid">
+      <div class="ui five wide column">
+      </div>
+      <div>
+        <card current-island-details.bind="currentIslandDetails" ></card>
+      </div>
+    </div>
+  </section>
+
+</template>

@@ -1,5 +1,4 @@
 <template>
-  <require from="../resources/elements/island-list"></require>
   <require from="../resources/elements/island-form"></require>
   <require from="../resources/elements/island-total"></require>
   <require from="../resources/elements/category-form"></require>
@@ -7,13 +6,13 @@
 
   <div class="ui stacked segment">
     <div>
-      <island-total islandTotal.bind="islandTotal"></island-total>
+      <island-total islandTotal.bind="islandTotal" user-details.bind="userDetails"></island-total>
     </div>
   </div>
 
   <div class="ui stacked segment">
     <div>
-        <island-form islands.bind="islands" region-categories.bind="regionCategories" ></island-form>
+        <island-form islands.bind="islands" region-categories.bind="regionCategories" user-details.bind="userDetails" ></island-form>
     </div>
   </div>
 

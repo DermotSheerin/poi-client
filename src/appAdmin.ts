@@ -4,7 +4,7 @@ import { autoinject } from 'aurelia-framework';
 import { ImageStore } from './services/image-store';
 
 @autoinject
-export class App {
+export class AppAdmin {
   router: Router;
 
   constructor(private imageStore: ImageStore) {}
@@ -13,18 +13,18 @@ export class App {
     config.options.pushState = true; // With single page applications, we sometime like to remove the # from the segment to make the url appear more natural. Aurelia support this seamlessly. It needs to be explicitly enabled via pushState configuration
     config.map([
       {
-        route: ['', 'islands'],
-        name: 'Island',
-        moduleId: PLATFORM.moduleName('views/islands'),
+        route: ['', 'users'],
+        name: 'Users',
+        moduleId: PLATFORM.moduleName('views/users'),
         nav: true,
-        title: 'Add Islands'
+        title: 'POI Users'
       },
       {
-        route: 'updateisland/:id',
-        name: 'updateisland', // it appears that name must match the route name here, is it because the view class is PascalCase  i.e., UpdateIsland?
-        moduleId: PLATFORM.moduleName('views/updateisland'),
+        route: 'user-islands/:id',
+        name: 'user-islands',
+        moduleId: PLATFORM.moduleName('resources/elements/user-islands'),
         nav: false,
-        title: 'Update Islands'
+        title: 'User Islands'
       },
       {
         route: 'logout',

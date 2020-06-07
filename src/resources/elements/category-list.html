@@ -16,7 +16,17 @@
         <td>  ${island.name}</td>
         <td>  ${island.latitude} </td>
         <td>  ${island.longitude} </td>
+        <!--  route-href custom attribute that can be used with an anchor to switch to the updateisland view when clicked -- original note here, change made, see below change to href
+              https://elanderson.net/2015/10/aurelia-routing-with-a-parameter/-->
+        <td>
+          <a href="updateisland/${island._id}"
+             class="ui icon button"> <i class="edit icon"></i> </a>
+        </td>
+        <td>
+          <button click.delegate= "deleteIsland(island)" class="ui icon button" > <i class="icon trash"></i></button></td>
+        </td>
       </tr>
       </tbody>
+      <h2><b>${response}</b></h2>
     </table>
 </template>

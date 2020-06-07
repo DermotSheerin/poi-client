@@ -1,0 +1,22 @@
+<template>
+
+  <section class="ui segment" repeat.for="user of users">
+    <div class="ui center aligned four column grid" >
+      <div class="two column row">
+        <div class="column">
+          <a href="user-islands/${user._id}">
+            <h3 class="ui image header">
+              <i class="large map marked alternate icon"></i>
+              <div class="content" >
+                <span style="color:#4183c4">${user.firstName} ${user.lastName}</span>
+                <div class="sub header"><strong>${user.islandCount} Island(s)</strong></div>
+              </div>
+            </h3>
+          </a>
+        </div>
+        <button click.delegate= "deleteUser(user._id)" class="ui icon button" > <i class="icon trash"></i></button>
+      </div>
+    </div>
+  </section>
+
+</template>

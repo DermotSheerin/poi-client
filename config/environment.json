@@ -1,4 +1,8 @@
 {
   "debug": true,
-  "testing": true
+  "testing": true,
+  "cloudinary": {
+    "name": "dsheerincloud",
+    "preset": "ia6ew6aq"
+  }
 }
