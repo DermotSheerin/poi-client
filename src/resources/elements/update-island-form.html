@@ -12,7 +12,7 @@
       </div>
       <div class="field">
         <label>Island Name</label>
-        <input value.bind="name" value="${currentIslandDetails.name}"/>
+        <input value.bind="name" value="${currentIslandDetails.name}" required>
       </div>
     </div>
     <div class="field">
@@ -22,11 +22,11 @@
     <div class="two fields">
       <div class="field">
         <label>Latitude</label>
-        <input value.bind="latitude" value="${currentIslandDetails.latitude}"/>
+        <input value.bind="latitude" value="${currentIslandDetails.latitude}" type="number"  step="any" required>
       </div>
       <div class="field">
         <label>Longitude</label>
-        <input value.bind="longitude" value="${currentIslandDetails.longitude}"/>
+        <input value.bind="longitude" value="${currentIslandDetails.longitude}" type="number"  step="any" required>
       </div>
     </div>
     <h2><b>${response}</b></h2>
