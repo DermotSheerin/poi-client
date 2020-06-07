@@ -11,7 +11,6 @@ export class UserList {
 
   async deleteUser(userId) {
     const response = await this.ds.deleteUser(userId);
+    this.users = response.users;
   }
-
-
 }
