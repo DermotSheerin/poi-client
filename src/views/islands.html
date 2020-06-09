@@ -3,6 +3,7 @@
   <require from="../resources/elements/island-total"></require>
   <require from="../resources/elements/category-form"></require>
   <require from="../resources/elements/category-list"></require>
+  <require from="../resources/elements/simple-map"></require>
 
   <div class="ui stacked segment">
     <div>
@@ -15,7 +16,10 @@
         <island-form islands.bind="islands" region-categories.bind="regionCategories" user-details.bind="userDetails" ></island-form>
     </div>
   </div>
-
+  <div class="seven wide column">
+    <simple-map></simple-map>
+    <div class="ui hidden divider"></div>
+  </div>
   <div class="ui stacked segment">
     <h1>View Islands by Region</h1>
     <div class="ui stackable two column grid">

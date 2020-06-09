@@ -1,13 +1,13 @@
 import {bindable, inject} from 'aurelia-framework';
-import {Island, RegionCategory, User} from '../../services/island-types';
+import {Island, RegionCategory, User, Location} from '../../services/island-types';
 import { IslandService } from '../../services/island-service';
 
 @inject(IslandService)
 export class IslandForm {
   name: string;
   description: string;
-  latitude: number;
-  longitude: number;
+  location: Location = { lat: 53.2734, lng: -7.7783203 };
+
   @bindable
   islands: Island[];
   @bindable
@@ -22,7 +22,8 @@ export class IslandForm {
 
   async addIsland() { // using ds to access methods in IslandService class and access the addIsland method
     this.response = ""; // clear any messages from previous activity
-    const response = await this.ds.addIsland(this.selectedRegionCategory, this.name, this.description, this.latitude, this.longitude);
+    console.log(this.location);
+    const response = await this.ds.addIsland(this.selectedRegionCategory, this.name, this.description, this.location);
     // pass the response to the user if island creation was successful
     this.response = response;
   }

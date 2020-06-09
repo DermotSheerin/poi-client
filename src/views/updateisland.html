@@ -2,15 +2,16 @@
   <require from="../resources/elements/update-island-form"></require>
   <require from="../resources/elements/upload"></require>
   <require from="../resources/elements/card"></require>
+  <require from="../resources/elements/simple-map"></require>
 
   <section class="ui raised segment">
     <div class="ui grid">
-      <div class="ui ten wide column">
+      <div class="ui eight wide column">
         <div>
           <update-island-form islands.bind="islands" region-categories.bind="regionCategories" current-island-details.bind="currentIslandDetails" ></update-island-form>
         </div>
       </div>
-      <div class="ui five wide column">
+      <div class="ui eight wide column">
         <div>
           <upload current-island-details.two-way="currentIslandDetails"></upload>
         </div>
