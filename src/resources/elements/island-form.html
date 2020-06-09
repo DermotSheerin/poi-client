@@ -1,4 +1,6 @@
 <template>
+  <require from="./coordinates"></require>
+
   <h1 class="ui header">Add an Island</h1>
   <form submit.trigger="addIsland()" class="ui primary segment form">
     <div class="one field">
@@ -19,16 +21,17 @@
       <label>Description</label>
       <input value.bind="description" required>
     </div>
-    <div class="two fields">
-      <div class="field">
-        <label>Latitude</label>
-        <input value.bind="latitude" type="number"  step="any" required>
-      </div>
-      <div class="field">
-        <label>Longitude</label>
-        <input value.bind="longitude" type="number"  step="any" required>
-      </div>
-    </div>
+    <coordinates location.two-way="location"></coordinates>
+<!--    <div class="two fields">-->
+<!--      <div class="field">-->
+<!--        <label>Latitude</label>-->
+<!--        <input value.bind="latitude" type="number"  step="any" required>-->
+<!--      </div>-->
+<!--      <div class="field">-->
+<!--        <label>Longitude</label>-->
+<!--        <input value.bind="longitude" type="number"  step="any" required>-->
+<!--      </div>-->
+<!--    </div>-->
     <button class="ui blue submit button">Add Island</button>
   </form>
   <h2><b>${response}</b></h2>

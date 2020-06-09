@@ -1,8 +1,8 @@
 import { inject, Aurelia } from 'aurelia-framework';
 import { Router } from 'aurelia-router';
 import { PLATFORM } from 'aurelia-pal';
-import {Island, RegionCategory, User} from "./island-types";
-import {HttpClient, HttpResponseMessage} from 'aurelia-http-client';
+import {Island, RegionCategory, User, Location, Image} from "./island-types";
+import {HttpClient} from 'aurelia-http-client';
 import { EventAggregator } from 'aurelia-event-aggregator';
 import {TotalIslandUpdate} from "./messages";
 
@@ -17,7 +17,7 @@ export class IslandService {
 
   constructor(private httpClient: HttpClient, private ea: EventAggregator, private au: Aurelia, private router: Router) {
     httpClient.configure(http => {
-      http.withBaseUrl('https://ds-poi-nodejs.herokuapp.com/');
+      http.withBaseUrl('http://localhost:3000');
       console.log(`here in Island-Service Constructor users - ${this.users}`);
     });
     this.getRegionCategories(); // this function call was initially inside the retrieveUserPOIDetails function triggered during login however the regionCategories array was not consistently showing
@@ -48,21 +48,34 @@ export class IslandService {
       }
     }
 
-  async addIsland(region: RegionCategory, name: string, description: string, latitude: number, longitude: number) {
+  async addIsland(region: RegionCategory, name: string, description: string, location: Location) {
     try {
       const island = {
         region: region, // regionCategory contains the lean details of each Region, here I pass back just the ID for the island to the backend
         name: name,
         description: description,
-        latitude: latitude,
-        longitude: longitude,
+        location: location
       };
+      console.log(island);
       const response = await this.httpClient.post('/api/islands/addIsland', island);
       const newIsland = await this.httpClient.get('/api/islands/showIslandDetails/' + response.content._id); // retrieve entire island object
+
+      let images: Image[];
+
+      const updatedIsland = {
+        _id: response.content._id,
+        user: response.content.user,
+        region: region, // regionCategory contains the lean details of each Region, here I pass back just the ID for the island to the backend
+        name: name,
+        description: description,
+        location: location,
+        image: images
+      };
+
       if (response.isSuccess) {
         this.islands.push(newIsland.content.islandDetails);
         this.islandTotal = this.islandTotal + 1; // increment the island count by 1
-        this.ea.publish(new TotalIslandUpdate(this.islandTotal));
+        this.ea.publish(new TotalIslandUpdate(this.islandTotal, updatedIsland));
         return "Island added successfully"
       } else return 'Error adding an Island'
     } catch (err) {

@@ -13,7 +13,7 @@ export class ImageStore {
     });
 
     this.backendClient.configure(http => {
-      http.withBaseUrl('https://ds-poi-nodejs.herokuapp.com/')
+      http.withBaseUrl('http://localhost:3000')
     });
 
 
