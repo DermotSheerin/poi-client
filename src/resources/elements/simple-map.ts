@@ -16,13 +16,6 @@ export class SimpleMap {
     });
   }
 
-  // renderIsland(island: Island) {
-  //   if (this.map) {
-  //     this.map.addMarker(island.location);
-  //     this.map.moveTo(12, island.location);
-  //   }
-  // }
-
   renderIsland(island: Island) {
     if (this.map) {
       const islandStr = `${island.name}`;
